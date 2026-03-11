@@ -1,0 +1,19 @@
+.submenu {
+  list-style: none;
+  padding-left: 30px;
+  margin-top: 10px;
+}
+
+.submenu li {
+  margin: 10px 0;
+}
+
+.submenu a {
+  text-decoration: none;
+  color: #b8c7ce;
+  font-size: 15px;
+}
+
+.submenu a:hover {
+  color: #ffffff;
+}

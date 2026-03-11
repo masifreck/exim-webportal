@@ -10,6 +10,9 @@ import LineWalk from './Screens/LineWalk'
 import Setting from './Screens/Setting'
 import Master from './Screens/Master'
 import User from './Screens/User'
+import DepartmentPage from './Screens/Master/Department'
+import BranchPage from './Screens/Master/Branch'
+import DesignationPage from './Screens/Master/Designation'
 
 function App() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
@@ -31,6 +34,10 @@ function App() {
     <Route path='/linewalk' element={<LineWalk/>} />
      <Route path='/setting' element={<Setting />} />
       <Route path='/master' element={<Master />} />
+
+       <Route path='/department' element={<DepartmentPage />} />
+ <Route path='/branch' element={<BranchPage />} />
+  <Route path='/designation' element={<DesignationPage />} />
       </Routes>
     </div>
     </Router>

@@ -17,3 +17,37 @@
 .submenu a:hover {
   color: #ffffff;
 }
+.active-link {
+  background: #2962ff;
+  color: white !important;
+  border-radius: 5px;
+  padding: 8px;
+}
+
+.active-link .icon {
+  color: white;
+}
+.sidebar-list-item a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #908f8f;
+}
+
+.submenu li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.active-link {
+  background: #2962ff;
+  color: white !important;
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.active-link .icon {
+  color: white;
+}

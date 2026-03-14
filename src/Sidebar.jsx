@@ -1,15 +1,56 @@
-import React, { useState } from "react";
-import { MdDashboard, MdAssignment, MdReportProblem, MdSettings, MdSettingsApplications } from "react-icons/md";
-import { FaUsers, FaWalking } from "react-icons/fa";
-import { MdLocalShipping } from "react-icons/md";
-import { FaAngleDown, FaAngleRight } from "react-icons/fa";
-import './Side.css'
+import React, { useState, useEffect } from "react";
+import {
+  MdDashboard,
+  MdAssignment,
+  MdReportProblem,
+  MdSettings,
+  MdSettingsApplications,
+  MdLogout,
+  MdLocalShipping,
+  MdBusiness
+} from "react-icons/md";
+
+import {
+  FaUsers,
+  FaWalking,
+  FaAngleDown,
+  FaAngleRight,
+  FaUserTie
+} from "react-icons/fa";
+
+import { BiGitBranch } from "react-icons/bi";
+import { RiAdminFill } from "react-icons/ri";
+
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
+
+import "./Side.css";
+
 function Sidebar() {
 
   const [masterOpen, setMasterOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
+
+  // Auto open master menu when inside master routes
+  useEffect(() => {
+    if (
+      location.pathname.includes("/designation") ||
+      location.pathname.includes("/branch") ||
+      location.pathname.includes("/department") ||
+      location.pathname.includes("/roles")
+    ) {
+      setMasterOpen(true);
+    }
+  }, [location]);
 
   return (
     <aside id="sidebar">
+
       <div className="sidebar-title">
         <div className="sidebar-brand">
           <MdLocalShipping className="icon_header" /> EXIM LOGISTICS
@@ -20,42 +61,47 @@ function Sidebar() {
       <ul className="sidebar-list">
 
         <li className="sidebar-list-item">
-          <a href="/">
+          <NavLink to="/home" className={({ isActive }) => isActive ? "active-link" : ""}>
             <MdDashboard className="icon" /> Dashboard
-          </a>
+          </NavLink>
         </li>
 
         <li className="sidebar-list-item">
-          <a href="/users">
+          <NavLink to="/users" className={({ isActive }) => isActive ? "active-link" : ""}>
             <FaUsers className="icon" /> User
-          </a>
+          </NavLink>
         </li>
 
         <li className="sidebar-list-item">
-          <a href="/tbt">
+          <NavLink to="/tbt" className={({ isActive }) => isActive ? "active-link" : ""}>
             <MdAssignment className="icon" /> TBT
-          </a>
+          </NavLink>
         </li>
 
         <li className="sidebar-list-item">
-          <a href="/linewalk">
+          <NavLink to="/linewalk" className={({ isActive }) => isActive ? "active-link" : ""}>
             <FaWalking className="icon" /> Line Walk
-          </a>
+          </NavLink>
         </li>
 
         <li className="sidebar-list-item">
-          <a href="/nearmiss">
+          <NavLink to="/nearmiss" className={({ isActive }) => isActive ? "active-link" : ""}>
             <MdReportProblem className="icon" /> Near Miss
-          </a>
+          </NavLink>
         </li>
-
 
         {/* MASTER MENU */}
 
         <li className="sidebar-list-item">
+
           <div
             onClick={() => setMasterOpen(!masterOpen)}
-            style={{ cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}
+            style={{
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}
           >
             <span>
               <MdSettingsApplications className="icon" /> Master
@@ -68,29 +114,68 @@ function Sidebar() {
             <ul className="submenu">
 
               <li>
-                <a href="/designation">Designation</a>
+                <NavLink
+                  to="/designation"
+                  className={({ isActive }) => isActive ? "active-link" : ""}
+                >
+                  <FaUserTie className="icon" /> Designation
+                </NavLink>
               </li>
 
               <li>
-                <a href="/branch">Branch</a>
+                <NavLink
+                  to="/branch"
+                  className={({ isActive }) => isActive ? "active-link" : ""}
+                >
+                  <BiGitBranch className="icon" /> Branch
+                </NavLink>
               </li>
 
               <li>
-                <a href="/department">Department</a>
+                <NavLink
+                  to="/department"
+                  className={({ isActive }) => isActive ? "active-link" : ""}
+                >
+                  <MdBusiness className="icon" /> Department
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  to="/roles"
+                  className={({ isActive }) => isActive ? "active-link" : ""}
+                >
+                  <RiAdminFill className="icon" /> Roles
+                </NavLink>
               </li>
 
             </ul>
           )}
         </li>
 
+        <li className="sidebar-list-item">
+          <NavLink to="/setting" className={({ isActive }) => isActive ? "active-link" : ""}>
+            <MdSettings className="icon" /> Setting
+          </NavLink>
+        </li>
+
+        {/* LOGOUT */}
 
         <li className="sidebar-list-item">
-          <a href="/setting">
-            <MdSettings className="icon" /> Setting
-          </a>
+          <div
+            onClick={handleLogout}
+            style={{
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center"
+            }}
+          >
+            <MdLogout className="icon" /> Logout
+          </div>
         </li>
 
       </ul>
+
     </aside>
   );
 }

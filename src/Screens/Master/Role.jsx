@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, Modal, TextField } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { ExportToCsv } from "export-to-csv";
-import CustomTextInput from "../../components/CustomTextInput";
+import CustomTextInput from "../../Components/CustomTextInput";
 import API from "../../api/api";
 
-export default function BranchPage() {
+export default function RolePage() {
 
   const [rows,setRows] = useState([]);
   const [loading,setLoading] = useState(false);
@@ -20,34 +20,39 @@ export default function BranchPage() {
 
   const [formData,setFormData] = useState({
     id:null,
-    name:""
+    name:"",
+    description:""
   });
 
-  /* ---------------- FETCH BRANCHES ---------------- */
+  /* ---------------- FETCH ROLES ---------------- */
 
-  const fetchBranches = async()=>{
+  const fetchRoles = async()=>{
 
     try{
 
       setLoading(true);
 
       const {data} = await API.get(
-        `/branches?page=${page+1}&limit=${pageSize}&search=${search}`
+        `/roles?page=${page+1}&limit=${pageSize}&search=${search}`
       );
 
       setRows(data.data);
-      setTotal(data.total);
+      setTotal(data.total || data.data.length);
 
     }catch(err){
+
       console.log(err);
+
     }finally{
+
       setLoading(false);
+
     }
 
   };
 
   useEffect(()=>{
-    fetchBranches();
+    fetchRoles();
   },[page,pageSize,search]);
 
   /* ---------------- FORM CHANGE ---------------- */
@@ -61,49 +66,50 @@ export default function BranchPage() {
 
   };
 
-  /* ---------------- SAVE BRANCH ---------------- */
+  /* ---------------- SAVE ROLE ---------------- */
 
   const handleSave = async()=>{
 
     try{
 
+      const payload = {
+        name:formData.name,
+        description:formData.description
+      };
+
       if(formData.id){
 
-        await API.put(`/branches/${formData.id}`,{
-          name:formData.name
-        });
+        await API.put(`/roles/${formData.id}`,payload);
 
       }else{
 
-        await API.post("/branches",{
-          name:formData.name
-        });
+        await API.post("/roles",payload);
 
       }
 
       setOpen(false);
-      setFormData({id:null,name:""});
-      fetchBranches();
+      setFormData({id:null,name:"",description:""});
+      fetchRoles();
 
     }catch(err){
 
-      alert("Failed to save branch");
+      alert("Failed to save role");
 
     }
 
   };
 
-  /* ---------------- DELETE BRANCH ---------------- */
+  /* ---------------- DELETE ROLE ---------------- */
 
   const handleDelete = async(id)=>{
 
-    if(!window.confirm("Delete this branch?")) return;
+    if(!window.confirm("Delete this role?")) return;
 
     try{
 
-      await API.delete(`/branches/${id}`);
+      await API.delete(`/roles/${id}`);
 
-      fetchBranches();
+      fetchRoles();
 
     }catch(err){
 
@@ -118,7 +124,7 @@ export default function BranchPage() {
   const exportCSV = ()=>{
 
     const csv = new ExportToCsv({
-      filename:"branches",
+      filename:"roles",
       useKeysAsHeaders:true
     });
 
@@ -132,7 +138,8 @@ export default function BranchPage() {
 
     setFormData({
       id:params.row.id,
-      name:params.row.name
+      name:params.row.name,
+      description:params.row.description
     });
 
     setOpen(true);
@@ -151,8 +158,14 @@ export default function BranchPage() {
 
     {
       field:"name",
-      headerName:"Branch Name",
-      flex:1
+      headerName:"Role",
+      flex:2
+    },
+
+    {
+      field:"description",
+      headerName:"Description",
+      flex:3
     },
 
     {
@@ -183,20 +196,18 @@ export default function BranchPage() {
 
   return (
 
-    <Box sx={{height:500,width:"100%"}}>
+    <Box sx={{height:700,width:"100%"}}>
 
       <Box sx={{display:"flex",gap:2,mb:2}}>
 
         <Button
           variant="contained"
           onClick={()=>{
-
-            setFormData({id:null,name:""});
+            setFormData({id:null,name:"",description:""});
             setOpen(true);
-
           }}
         >
-          Add Branch
+          Add Role
         </Button>
 
         <Button
@@ -208,13 +219,9 @@ export default function BranchPage() {
 
         <TextField
           size="small"
-          label="Search Branch"
+          label="Search Role"
           value={search}
           onChange={(e)=>setSearch(e.target.value)}
-            sx={{
-    backgroundColor: "#f5f5f5",
-    borderRadius: "6px"
-  }}
         />
 
       </Box>
@@ -257,13 +264,20 @@ export default function BranchPage() {
         >
 
           <h3>
-            {formData.id ? "Edit Branch" : "Add Branch"}
+            {formData.id ? "Edit Role" : "Add Role"}
           </h3>
 
           <CustomTextInput
-            label="Branch Name"
+            label="Role Name"
             name="name"
             value={formData.name}
+            onChange={handleChange}
+          />
+
+          <CustomTextInput
+            label="Description"
+            name="description"
+            value={formData.description}
             onChange={handleChange}
           />
 
@@ -290,6 +304,7 @@ export default function BranchPage() {
       </Modal>
 
     </Box>
+
   );
 
 }

@@ -147,7 +147,7 @@ export default function UserModal({
         <FormControlLabel
           control={
             <Checkbox
-              checked={formData.permissions.tbt}
+           checked={formData.permissions?.tbt || false}
               onChange={()=>handlePermission("tbt")}
             />
           }
@@ -157,7 +157,7 @@ export default function UserModal({
         <FormControlLabel
           control={
             <Checkbox
-              checked={formData.permissions.nearMe}
+              checked={formData.permissions.nearMe || false}
               onChange={()=>handlePermission("nearMe")}
             />
           }
@@ -167,7 +167,7 @@ export default function UserModal({
         <FormControlLabel
           control={
             <Checkbox
-              checked={formData.permissions.lineWalk}
+              checked={formData.permissions.lineWalk || false}
               onChange={()=>handlePermission("lineWalk")}
             />
           }
@@ -177,7 +177,7 @@ export default function UserModal({
         <FormControlLabel
           control={
             <Checkbox
-              checked={formData.permissions.isAdmin}
+              checked={formData.permissions.isAdmin || false}
               onChange={()=>handlePermission("isAdmin")}
             />
           }

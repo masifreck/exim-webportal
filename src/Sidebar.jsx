@@ -19,7 +19,7 @@ import {
 } from "react-icons/fa";
 
 import { BiGitBranch } from "react-icons/bi";
-import { RiAdminFill } from "react-icons/ri";
+import { RiAdminFill, RiListUnordered, RiStarSmileFill, RiFolderFill, RiStarFill   } from "react-icons/ri";
 
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
@@ -148,7 +148,23 @@ function Sidebar() {
                   <RiAdminFill className="icon" /> Roles
                 </NavLink>
               </li>
+<li>
+  <NavLink
+    to="/sections"
+    className={({ isActive }) => isActive ? "active-link" : ""}
+  >
+    <RiFolderFill className="icon" /> Sections
+  </NavLink>
+</li>
 
+<li>
+  <NavLink
+    to="/item-of-interest"
+    className={({ isActive }) => isActive ? "active-link" : ""}
+  >
+    <RiStarFill className="icon" /> Item of Interest
+  </NavLink>
+</li>
             </ul>
           )}
         </li>

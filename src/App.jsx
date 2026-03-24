@@ -19,7 +19,8 @@ import Roles from './Screens/Master/Role'
 
 import LoginPage from './Screens/LoginPage'
 import ProtectedRoute from './Components/ProtectedRoute'
-
+import ItemOfInterestPage from './Screens/Master/ItemOfIntrest'
+import SectionPage from './Screens/Master/Section'
 function App() {
 
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
@@ -58,6 +59,8 @@ function App() {
                   <Route path="branch" element={<BranchPage />} />
                   <Route path="designation" element={<DesignationPage />} />
                   <Route path="roles" element={<Roles />} />
+                  <Route path="/item-of-interest" element={<ItemOfInterestPage />} />
+                   <Route path="/sections" element={<SectionPage />} />
                 </Routes>
 
               </div>

@@ -21,6 +21,9 @@ import LoginPage from './Screens/LoginPage'
 import ProtectedRoute from './Components/ProtectedRoute'
 import ItemOfInterestPage from './Screens/Master/ItemOfIntrest'
 import SectionPage from './Screens/Master/Section'
+import Location from './Screens/Master/Location'
+import Place from './Screens/Master/Place'
+import PossibleConsequence from './Screens/Master/PossibleConsequence'
 function App() {
 
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
@@ -61,6 +64,9 @@ function App() {
                   <Route path="roles" element={<Roles />} />
                   <Route path="/item-of-interest" element={<ItemOfInterestPage />} />
                    <Route path="/sections" element={<SectionPage />} />
+                   <Route path="/possible-consequences" element={<PossibleConsequence />} />
+                   <Route path="/locations" element={<Location />} />
+                   <Route path="/places" element={<Place />} />
                 </Routes>
 
               </div>

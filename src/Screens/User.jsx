@@ -135,7 +135,7 @@ useEffect(()=>{
     try{
 
       const payload = {
-        employee_id:formData.employee_id,
+      //  employee_id:formData.employee_id,
         name:formData.name,
         mobile_no:formData.mobile_no,
         username:formData.username,
@@ -146,7 +146,6 @@ useEffect(()=>{
         role_id:formData.role_id,
         gender:formData.gender,
         is_active:true,
-
         is_tbt:formData.permissions.tbt,
         is_linewalk:formData.permissions.lineWalk,
         is_nearmiss:formData.permissions.nearMe,

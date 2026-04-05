@@ -17,7 +17,7 @@ import {
   FaAngleRight,
   FaUserTie
 } from "react-icons/fa";
-
+import { MdPlace, MdLocationOn, MdWarning , MdLocalFireDepartment } from "react-icons/md";
 import { BiGitBranch } from "react-icons/bi";
 import { RiAdminFill, RiListUnordered, RiStarSmileFill, RiFolderFill, RiStarFill   } from "react-icons/ri";
 
@@ -110,63 +110,94 @@ function Sidebar() {
             {masterOpen ? <FaAngleDown /> : <FaAngleRight />}
           </div>
 
-          {masterOpen && (
-            <ul className="submenu">
+       {masterOpen && (
+  <ul className="submenu">
 
-              <li>
-                <NavLink
-                  to="/designation"
-                  className={({ isActive }) => isActive ? "active-link" : ""}
-                >
-                  <FaUserTie className="icon" /> Designation
-                </NavLink>
-              </li>
+    <li>
+      <NavLink
+        to="/designation"
+        className={({ isActive }) => isActive ? "active-link" : ""}
+      >
+        <FaUserTie className="icon" /> Designation
+      </NavLink>
+    </li>
 
-              <li>
-                <NavLink
-                  to="/branch"
-                  className={({ isActive }) => isActive ? "active-link" : ""}
-                >
-                  <BiGitBranch className="icon" /> Branch
-                </NavLink>
-              </li>
+    <li>
+      <NavLink
+        to="/branch"
+        className={({ isActive }) => isActive ? "active-link" : ""}
+      >
+        <BiGitBranch className="icon" /> Branch
+      </NavLink>
+    </li>
 
-              <li>
-                <NavLink
-                  to="/department"
-                  className={({ isActive }) => isActive ? "active-link" : ""}
-                >
-                  <MdBusiness className="icon" /> Department
-                </NavLink>
-              </li>
+    <li>
+      <NavLink
+        to="/department"
+        className={({ isActive }) => isActive ? "active-link" : ""}
+      >
+        <MdBusiness className="icon" /> Department
+      </NavLink>
+    </li>
 
-              <li>
-                <NavLink
-                  to="/roles"
-                  className={({ isActive }) => isActive ? "active-link" : ""}
-                >
-                  <RiAdminFill className="icon" /> Roles
-                </NavLink>
-              </li>
-<li>
+    <li>
+      <NavLink
+        to="/roles"
+        className={({ isActive }) => isActive ? "active-link" : ""}
+      >
+        <RiAdminFill className="icon" /> Roles
+      </NavLink>
+    </li>
+
+    <li>
+      <NavLink
+        to="/sections"
+        className={({ isActive }) => isActive ? "active-link" : ""}
+      >
+        <RiFolderFill className="icon" /> Sections
+      </NavLink>
+    </li>
+
+    <li>
+      <NavLink
+        to="/item-of-interest"
+        className={({ isActive }) => isActive ? "active-link" : ""}
+      >
+        <RiStarFill className="icon" /> Item of Interest
+      </NavLink>
+    </li>
+
+    {/* NEW ITEMS */}
+
+  <li>
   <NavLink
-    to="/sections"
+    to="/places"
     className={({ isActive }) => isActive ? "active-link" : ""}
   >
-    <RiFolderFill className="icon" /> Sections
+    <MdLocalFireDepartment className="icon" /> Place of Incident
   </NavLink>
 </li>
 
-<li>
-  <NavLink
-    to="/item-of-interest"
-    className={({ isActive }) => isActive ? "active-link" : ""}
-  >
-    <RiStarFill className="icon" /> Item of Interest
-  </NavLink>
-</li>
-            </ul>
-          )}
+    <li>
+      <NavLink
+        to="/locations"
+        className={({ isActive }) => isActive ? "active-link" : ""}
+      >
+        <MdLocationOn className="icon" /> Location
+      </NavLink>
+    </li>
+
+    <li>
+      <NavLink
+        to="/possible-consequences"
+        className={({ isActive }) => isActive ? "active-link" : ""}
+      >
+        <MdWarning className="icon" /> Possible Consequence
+      </NavLink>
+    </li>
+
+  </ul>
+)}
         </li>
 
         <li className="sidebar-list-item">

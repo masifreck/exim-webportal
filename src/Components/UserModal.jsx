@@ -52,12 +52,7 @@ export default function UserModal({
         </Typography>
 
         {/* EMPLOYEE ID */}
-        <CustomTextInput
-          label="Employee ID"
-          name="employee_id"
-          value={formData.employee_id}
-          onChange={handleChange}
-        />
+  
 
         {/* USERNAME */}
         <CustomTextInput

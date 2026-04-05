@@ -65,132 +65,137 @@ const LoginPage = () => {
 
   };
 
-  return (
+return (
+  <Box
+    sx={{
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      position: "relative",
+      overflow: "hidden",
 
-    <Box
+      /* Background Image */
+      backgroundImage: "url('/bg.jpg')", // place inside public folder
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+
+      /* Overlay */
+      "&::before": {
+        content: '""',
+        position: "absolute",
+        inset: 0,
+        background: "rgba(0,0,0,0.45)", // adjust opacity if needed
+        zIndex: 0
+      }
+    }}
+  >
+    <Container
+      maxWidth="xs"
       sx={{
-        minHeight:"100vh",
-        display:"flex",
-        alignItems:"center",
-        justifyContent:"center",
-        background:"linear-gradient(135deg,#0f2027,#203a43,#2c5364)"
+        position: "relative",
+        zIndex: 1
       }}
     >
-
-      <Container maxWidth="xs">
-
-        <Paper
-          elevation={12}
+      <Paper
+        elevation={12}
+        sx={{
+          p: 4,
+          borderRadius: 4,
+          textAlign: "center",
+          backdropFilter: "blur(12px)",
+          background: "rgba(255,255,255,0.9)"
+        }}
+      >
+        {/* COMPANY LOGO */}
+        <Box
+          component="img"
+          src="/EL-logo.png"
+          alt="Company Logo"
           sx={{
-            p:4,
-            borderRadius:4,
-            textAlign:"center",
-            backdropFilter:"blur(10px)",
-            background:"rgba(255,255,255,0.95)"
+            height: 70,
+            mb: 2,
+            objectFit: "contain"
           }}
-        >
+        />
 
-          {/* COMPANY LOGO */}
-          <Box
-            component="img"
-            src="/EL-logo.png"
-            alt="Company Logo"
-            sx={{
-              height:70,
-              mb:2,
-              objectFit:"contain"
+        <Typography variant="h4" fontWeight="bold" mb={0.5}>
+          Welcome
+        </Typography>
+
+        <Typography variant="body2" color="text.secondary" mb={3}>
+          Login to your account
+        </Typography>
+
+        <form onSubmit={handleLogin}>
+          <TextField
+            fullWidth
+            label="Username"
+            name="username"
+            margin="normal"
+            value={form.username}
+            onChange={handleChange}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <PersonIcon />
+                </InputAdornment>
+              )
             }}
           />
 
-          <Typography
-            variant="h4"
-            fontWeight="bold"
-            mb={0.5}
+          <TextField
+            fullWidth
+            label="Password"
+            name="password"
+            type={showPassword ? "text" : "password"}
+            margin="normal"
+            value={form.password}
+            onChange={handleChange}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <LockIcon />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
+          />
+
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            size="large"
+            sx={{
+              mt: 3,
+              borderRadius: 3,
+              py: 1.3,
+              fontWeight: "bold",
+              textTransform: "none",
+              fontSize: 16
+            }}
+            disabled={loading}
           >
-            Welcome
-          </Typography>
-
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            mb={3}
-          >
-            Login to your account
-          </Typography>
-
-          <form onSubmit={handleLogin}>
-
-            <TextField
-              fullWidth
-              label="Username"
-              name="username"
-              margin="normal"
-              value={form.username}
-              onChange={handleChange}
-              InputProps={{
-                startAdornment:(
-                  <InputAdornment position="start">
-                    <PersonIcon/>
-                  </InputAdornment>
-                )
-              }}
-            />
-
-            <TextField
-              fullWidth
-              label="Password"
-              name="password"
-              type={showPassword?"text":"password"}
-              margin="normal"
-              value={form.password}
-              onChange={handleChange}
-              InputProps={{
-                startAdornment:(
-                  <InputAdornment position="start">
-                    <LockIcon/>
-                  </InputAdornment>
-                ),
-                endAdornment:(
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={()=>setShowPassword(!showPassword)}
-                    >
-                      {showPassword?<VisibilityOff/>:<Visibility/>}
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }}
-            />
-
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              size="large"
-              sx={{
-                mt:3,
-                borderRadius:3,
-                py:1.3,
-                fontWeight:"bold",
-                textTransform:"none",
-                fontSize:16
-              }}
-              disabled={loading}
-            >
-
-              {loading ? <CircularProgress size={24} color="inherit"/> : "Sign In"}
-
-            </Button>
-
-          </form>
-
-        </Paper>
-
-      </Container>
-
-    </Box>
-
-  );
+            {loading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "Sign In"
+            )}
+          </Button>
+        </form>
+      </Paper>
+    </Container>
+  </Box>
+);
 
 };
 

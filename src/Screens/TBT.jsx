@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { ExportToCsv } from "export-to-csv";
-
+import DownloadIcon from "@mui/icons-material/Download";
 import API from "../api/api";
 import TBTModal from "../Components/TBTModal";
 
@@ -150,49 +150,169 @@ function TBT() {
     fetchTBT();
   };
 
-  /* ---------------- GRID ---------------- */
+  const getDepartmentName = (id) => {
+  return departments.find((d) => d.value === id)?.label || "-";
+};
 
-  const columns = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "tbt_datetime", headerName: "Date", width: 180 },
-    { field: "department_id", headerName: "Department", width: 120 },
-    { field: "section_id", headerName: "Section", width: 120 },
-    { field: "point_discussed_dis", headerName: "Discussion", width: 250 },
-    {
-      field: "actions",
-      headerName: "Actions",
-      width: 220,
-      renderCell: (params) => (
-        <>
-          <Button size="small" onClick={() => openModal(params.row)}>Edit</Button>
-          <Button size="small" color="error" onClick={() => handleDelete(params.row.id)}>Delete</Button>
-        </>
-      )
-    }
-  ];
+const getSectionName = (id) => {
+  return sections.find((s) => s.value === id)?.label || "-";
+};
+
+const getSupervisorName = (id) => {
+  return supervisors.find((s) => s.value === id)?.label || "-";
+};
+
+  /* ---------------- GRID ---------------- */
+const exportCSV = () => {
+
+  const csvData = rows.map((row) => ({
+    ID: row.id,
+    Date: row.tbt_datetime
+      ? new Date(row.tbt_datetime).toLocaleString()
+      : "-",
+    Department: getDepartmentName(row.department_id),
+    Section: getSectionName(row.section_id),
+    Supervisor: getSupervisorName(row.supervision_id),
+    Discussed: row.point_discussed ? "Yes" : "No",
+    Discussion: row.point_discussed_dis || "-",
+    GeneralObservation: row.item_general_dis || "-",
+    SafetyMessage: row.safety_message ? "Yes" : "No"
+  }));
+
+  const options = {
+    fieldSeparator: ",",
+    filename: "TBT_Report",
+    quoteStrings: '"',
+    decimalSeparator: ".",
+    showLabels: true,
+    useBom: true,
+    useKeysAsHeaders: true
+  };
+
+  const csvExporter = new ExportToCsv(options);
+  csvExporter.generateCsv(csvData);
+};
+const columns = [
+  { field: "id", headerName: "ID", width: 70 },
+
+  {
+    field: "tbt_datetime",
+    headerName: "Date",
+    width: 180,
+    renderCell: ({ row }) =>
+      row?.tbt_datetime
+        ? new Date(row.tbt_datetime).toLocaleString()
+        : "-"
+  },
+
+  {
+    field: "department_id",
+    headerName: "Department",
+    width: 160,
+    renderCell: ({ row }) =>
+      getDepartmentName(row?.department_id)
+  },
+
+  {
+    field: "section_id",
+    headerName: "Section",
+    width: 160,
+    renderCell: ({ row }) =>
+      getSectionName(row?.section_id)
+  },
+
+  {
+    field: "supervision_id",
+    headerName: "Supervisor",
+    width: 160,
+    renderCell: ({ row }) =>
+      getSupervisorName(row?.supervision_id)
+  },
+
+  {
+    field: "point_discussed",
+    headerName: "Discussed",
+    width: 120,
+    renderCell: ({ row }) =>
+      row?.point_discussed ? "Yes" : "No"
+  },
+
+  {
+    field: "point_discussed_dis",
+    headerName: "Discussion",
+    width: 250,
+    renderCell: ({ row }) => row?.point_discussed_dis || "-"
+  },
+
+  {
+    field: "item_general_dis",
+    headerName: "General Observation",
+    width: 250,
+    renderCell: ({ row }) => row?.item_general_dis || "-"
+  },
+
+  {
+    field: "safety_message",
+    headerName: "Safety Msg",
+    width: 120,
+    renderCell: ({ row }) =>
+      row?.safety_message ? "Yes" : "No"
+  },
+
+  {
+    field: "actions",
+    headerName: "Actions",
+    width: 220,
+    renderCell: ({ row }) => (
+      <>
+        <Button size="small" onClick={() => openModal(row)}>
+          Edit
+        </Button>
+        <Button
+          size="small"
+          color="error"
+          onClick={() => handleDelete(row.id)}
+        >
+          Delete
+        </Button>
+      </>
+    )
+  }
+];
 
   return (
     <Box sx={{ height: 600, width: "100%" }}>
 
-      <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-        <Button
-          variant="contained"
-          onClick={() => {
-            setEditingTBT(null);
-            setFormData(emptyTBT);
-            setOpen(true);
-          }}
-        >
-          + New TBT
-        </Button>
+    <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
 
-        <TextField
-          size="small"
-          label="Search"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </Box>
+  <Button
+    variant="contained"
+    onClick={() => {
+      setEditingTBT(null);
+      setFormData(emptyTBT);
+      setOpen(true);
+    }}
+  >
+    + New TBT
+  </Button>
+
+<Button
+  variant="outlined"
+  color="success"
+  startIcon={<DownloadIcon />}
+  onClick={exportCSV}
+>
+  Export CSV
+</Button>
+
+  <TextField
+    size="small"
+    label="Search"
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+  />
+
+</Box>
 
       <DataGrid
         rows={rows}

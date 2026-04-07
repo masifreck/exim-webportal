@@ -179,9 +179,16 @@ export default function TBTModal({
 
     const data = new FormData();
 
-    Object.keys(formData).forEach(key => {
-      data.append(key, JSON.stringify(formData[key]));
-    });
+ // only send normal fields
+Object.keys(formData).forEach(key => {
+
+  // ❌ skip attachment fields
+  if (
+    key.includes("attachment")
+  ) return;
+
+  data.append(key, JSON.stringify(formData[key]));
+});
 
     Object.keys(newFiles).forEach(field => {
       newFiles[field].forEach(file => {

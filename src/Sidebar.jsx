@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   MdDashboard,
   MdAssignment,
@@ -7,7 +7,8 @@ import {
   MdSettingsApplications,
   MdLogout,
   MdLocalShipping,
-  MdBusiness
+  MdBusiness,
+  MdSearch
 } from "react-icons/md";
 
 import {
@@ -17,17 +18,28 @@ import {
   FaAngleRight,
   FaUserTie
 } from "react-icons/fa";
-import { MdPlace, MdLocationOn, MdWarning , MdLocalFireDepartment } from "react-icons/md";
+
+import {
+  MdLocationOn,
+  MdWarning,
+  MdLocalFireDepartment,
+  MdOutlineMap
+} from "react-icons/md";
+
 import { BiGitBranch } from "react-icons/bi";
-import { RiAdminFill, RiListUnordered, RiStarSmileFill, RiFolderFill, RiStarFill   } from "react-icons/ri";
+import {
+  RiAdminFill,
+  RiFolderFill,
+  RiStarFill
+} from "react-icons/ri";
 
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
-
 import "./Side.css";
 
 function Sidebar() {
-
   const [masterOpen, setMasterOpen] = useState(false);
+  const [search, setSearch] = useState("");
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -36,7 +48,6 @@ function Sidebar() {
     navigate("/");
   };
 
-  // Auto open master menu when inside master routes
   useEffect(() => {
     if (
       location.pathname.includes("/designation") ||
@@ -48,158 +59,106 @@ function Sidebar() {
     }
   }, [location]);
 
+  // 🔍 MENU CONFIG (IMPORTANT)
+  const menuItems = [
+    { label: "Dashboard", icon: <MdDashboard />, path: "/home" },
+    { label: "User", icon: <FaUsers />, path: "/users" },
+    { label: "TBT", icon: <MdAssignment />, path: "/tbt" },
+    { label: "Line Walk", icon: <FaWalking />, path: "/linewalk" },
+    { label: "Near Miss", icon: <MdReportProblem />, path: "/nearmiss" }
+  ];
+
+  const masterItems = [
+    { label: "Designation", icon: <FaUserTie />, path: "/designation" },
+    { label: "Branch", icon: <BiGitBranch />, path: "/branch" },
+    { label: "Department", icon: <MdBusiness />, path: "/department" },
+    { label: "Roles", icon: <RiAdminFill />, path: "/roles" },
+    { label: "Sections", icon: <RiFolderFill />, path: "/sections" },
+    { label: "Item of Interest", icon: <RiStarFill />, path: "/item-of-interest" },
+    { label: "Place of Incident", icon: <MdLocalFireDepartment />, path: "/places" },
+    { label: "Location", icon: <MdLocationOn />, path: "/locations" },
+    { label: "Area", icon: <MdOutlineMap />, path: "/area" },
+    { label: "Possible Consequence", icon: <MdWarning />, path: "/possible-consequences" }
+  ];
+
+  // 🔍 FILTER LOGIC
+  const filteredMenu = useMemo(() => {
+    return menuItems.filter(item =>
+      item.label.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [search]);
+
+  const filteredMaster = useMemo(() => {
+    return masterItems.filter(item =>
+      item.label.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [search]);
+
   return (
     <aside id="sidebar">
 
+      {/* HEADER */}
       <div className="sidebar-title">
         <div className="sidebar-brand">
-          <MdLocalShipping className="icon_header" /> EXIM LOGISTICS
+          <MdLocalShipping className="icon_header" />
+          EXIM LOGISTICS
         </div>
-        <span className="icon close_icon">✕</span>
+      </div>
+
+      {/* 🔍 SEARCH BAR */}
+      <div className="sidebar-search">
+        <MdSearch />
+        <input
+          type="text"
+          placeholder="Search menu..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
 
       <ul className="sidebar-list">
 
-        <li className="sidebar-list-item">
-          <NavLink to="/home" className={({ isActive }) => isActive ? "active-link" : ""}>
-            <MdDashboard className="icon" /> Dashboard
-          </NavLink>
-        </li>
-
-        <li className="sidebar-list-item">
-          <NavLink to="/users" className={({ isActive }) => isActive ? "active-link" : ""}>
-            <FaUsers className="icon" /> User
-          </NavLink>
-        </li>
-
-        <li className="sidebar-list-item">
-          <NavLink to="/tbt" className={({ isActive }) => isActive ? "active-link" : ""}>
-            <MdAssignment className="icon" /> TBT
-          </NavLink>
-        </li>
-
-        <li className="sidebar-list-item">
-          <NavLink to="/linewalk" className={({ isActive }) => isActive ? "active-link" : ""}>
-            <FaWalking className="icon" /> Line Walk
-          </NavLink>
-        </li>
-
-        <li className="sidebar-list-item">
-          <NavLink to="/nearmiss" className={({ isActive }) => isActive ? "active-link" : ""}>
-            <MdReportProblem className="icon" /> Near Miss
-          </NavLink>
-        </li>
+        {/* MAIN MENU */}
+        {filteredMenu.map((item, index) => (
+          <li key={index} className="sidebar-list-item">
+            <NavLink to={item.path} className={({ isActive }) => isActive ? "active-link" : ""}>
+              <span className="icon">{item.icon}</span>
+              {item.label}
+            </NavLink>
+          </li>
+        ))}
 
         {/* MASTER MENU */}
+        {(filteredMaster.length > 0 || search === "") && (
+          <li className="sidebar-list-item">
 
-        <li className="sidebar-list-item">
+            <div
+              className="master-toggle"
+              onClick={() => setMasterOpen(!masterOpen)}
+            >
+              <span>
+                <MdSettingsApplications className="icon" /> Master
+              </span>
+              {masterOpen ? <FaAngleDown /> : <FaAngleRight />}
+            </div>
 
-          <div
-            onClick={() => setMasterOpen(!masterOpen)}
-            style={{
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between"
-            }}
-          >
-            <span>
-              <MdSettingsApplications className="icon" /> Master
-            </span>
+            <div className={`submenu ${masterOpen ? "open" : ""}`}>
+              {filteredMaster.map((item, index) => (
+                <NavLink
+                  key={index}
+                  to={item.path}
+                  className={({ isActive }) => isActive ? "active-link" : ""}
+                >
+                  <span className="icon">{item.icon}</span>
+                  {item.label}
+                </NavLink>
+              ))}
+            </div>
 
-            {masterOpen ? <FaAngleDown /> : <FaAngleRight />}
-          </div>
+          </li>
+        )}
 
-       {masterOpen && (
-  <ul className="submenu">
-
-    <li>
-      <NavLink
-        to="/designation"
-        className={({ isActive }) => isActive ? "active-link" : ""}
-      >
-        <FaUserTie className="icon" /> Designation
-      </NavLink>
-    </li>
-
-    <li>
-      <NavLink
-        to="/branch"
-        className={({ isActive }) => isActive ? "active-link" : ""}
-      >
-        <BiGitBranch className="icon" /> Branch
-      </NavLink>
-    </li>
-
-    <li>
-      <NavLink
-        to="/department"
-        className={({ isActive }) => isActive ? "active-link" : ""}
-      >
-        <MdBusiness className="icon" /> Department
-      </NavLink>
-    </li>
-
-    <li>
-      <NavLink
-        to="/roles"
-        className={({ isActive }) => isActive ? "active-link" : ""}
-      >
-        <RiAdminFill className="icon" /> Roles
-      </NavLink>
-    </li>
-
-    <li>
-      <NavLink
-        to="/sections"
-        className={({ isActive }) => isActive ? "active-link" : ""}
-      >
-        <RiFolderFill className="icon" /> Sections
-      </NavLink>
-    </li>
-
-    <li>
-      <NavLink
-        to="/item-of-interest"
-        className={({ isActive }) => isActive ? "active-link" : ""}
-      >
-        <RiStarFill className="icon" /> Item of Interest
-      </NavLink>
-    </li>
-
-    {/* NEW ITEMS */}
-
-  <li>
-  <NavLink
-    to="/places"
-    className={({ isActive }) => isActive ? "active-link" : ""}
-  >
-    <MdLocalFireDepartment className="icon" /> Place of Incident
-  </NavLink>
-</li>
-
-    <li>
-      <NavLink
-        to="/locations"
-        className={({ isActive }) => isActive ? "active-link" : ""}
-      >
-        <MdLocationOn className="icon" /> Location
-      </NavLink>
-    </li>
-
-    <li>
-      <NavLink
-        to="/possible-consequences"
-        className={({ isActive }) => isActive ? "active-link" : ""}
-      >
-        <MdWarning className="icon" /> Possible Consequence
-      </NavLink>
-    </li>
-
-  </ul>
-)}
-        </li>
-
+        {/* SETTINGS */}
         <li className="sidebar-list-item">
           <NavLink to="/setting" className={({ isActive }) => isActive ? "active-link" : ""}>
             <MdSettings className="icon" /> Setting
@@ -207,22 +166,11 @@ function Sidebar() {
         </li>
 
         {/* LOGOUT */}
-
-        <li className="sidebar-list-item">
-          <div
-            onClick={handleLogout}
-            style={{
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center"
-            }}
-          >
-            <MdLogout className="icon" /> Logout
-          </div>
+        <li className="sidebar-list-item logout" onClick={handleLogout}>
+          <MdLogout className="icon" /> Logout
         </li>
 
       </ul>
-
     </aside>
   );
 }

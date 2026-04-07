@@ -24,59 +24,45 @@ import SectionPage from './Screens/Master/Section'
 import Location from './Screens/Master/Location'
 import Place from './Screens/Master/Place'
 import PossibleConsequence from './Screens/Master/PossibleConsequence'
+import Area from './Screens/Master/Area'
+   import Layout from "./Layout";
 function App() {
 
-  const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
-
-  const OpenSidebar = () => {
-    setOpenSidebarToggle(!openSidebarToggle)
-  }
-
   return (
-    <Router>
 
-      <Routes>
 
-        {/* Public Route */}
-        <Route path="/" element={<LoginPage />} />
+<Router>
+  <Routes>
 
-        {/* Protected Routes */}
-        <Route
-          path="/*"
-          element={
-            <ProtectedRoute>
-              <div className='grid-container'>
-                <Header OpenSidebar={OpenSidebar} />
-                <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
+    {/* Public */}
+    <Route path="/" element={<LoginPage />} />
 
-                <Routes>
-                  <Route path="home" element={<Home />} />
-                  <Route path="users" element={<User />} />
-                  <Route path="tbt" element={<TBT />} />
-                  <Route path="nearmiss" element={<NearMiss />} />
-                  <Route path="linewalk" element={<LineWalk />} />
-                  <Route path="setting" element={<Setting />} />
-                  <Route path="master" element={<Master />} />
+    {/* Protected */}
+    <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
 
-                  <Route path="department" element={<DepartmentPage />} />
-                  <Route path="branch" element={<BranchPage />} />
-                  <Route path="designation" element={<DesignationPage />} />
-                  <Route path="roles" element={<Roles />} />
-                  <Route path="/item-of-interest" element={<ItemOfInterestPage />} />
-                   <Route path="/sections" element={<SectionPage />} />
-                   <Route path="/possible-consequences" element={<PossibleConsequence />} />
-                   <Route path="/locations" element={<Location />} />
-                   <Route path="/places" element={<Place />} />
-                </Routes>
+      <Route path="/home" element={<Home />} />
+      <Route path="/users" element={<User />} />
+      <Route path="/tbt" element={<TBT />} />
+      <Route path="/nearmiss" element={<NearMiss />} />
+      <Route path="/linewalk" element={<LineWalk />} />
+      <Route path="/setting" element={<Setting />} />
 
-              </div>
-            </ProtectedRoute>
-          }
-        />
+      {/* MASTER */}
+      <Route path="/department" element={<DepartmentPage />} />
+      <Route path="/branch" element={<BranchPage />} />
+      <Route path="/designation" element={<DesignationPage />} />
+      <Route path="/roles" element={<Roles />} />
+      <Route path="/item-of-interest" element={<ItemOfInterestPage />} />
+      <Route path="/sections" element={<SectionPage />} />
+      <Route path="/possible-consequences" element={<PossibleConsequence />} />
+      <Route path="/locations" element={<Location />} />
+      <Route path="/places" element={<Place />} />
+      <Route path="/area" element={<Area />} />
 
-      </Routes>
+    </Route>
 
-    </Router>
+  </Routes>
+</Router>
   )
 }
 

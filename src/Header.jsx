@@ -6,7 +6,9 @@ function Header({ OpenSidebar }) {
     <>
       <header className="header">
         <div className="header-left">
-     
+          {/* Hamburger button for sidebar toggle */}
+          <BsJustify className="menu-toggle" onClick={OpenSidebar} title="Menu" />
+
           <span className="header-brand">Incident Management System</span>
         </div>
 
@@ -50,6 +52,7 @@ function Header({ OpenSidebar }) {
           color: #1e293b;
         }
 
+        /* Sidebar toggle button */
         .menu-toggle {
           font-size: 24px;
           cursor: pointer;
@@ -82,7 +85,7 @@ function Header({ OpenSidebar }) {
         /* Responsive adjustments */
         @media screen and (max-width: 992px) {
           .header {
-            left: 0;
+            left: 0; /* Full width on mobile */
           }
         }
       `}</style>

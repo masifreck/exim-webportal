@@ -38,32 +38,31 @@ const LoginPage = () => {
     });
   };
 
-  const handleLogin = async(e)=>{
-    e.preventDefault();
+ const handleLogin = async (e) => {
+  e.preventDefault();
+  try {
+    setLoading(true);
+    const { data } = await API.post("/auth/login", form);
 
-    try{
+    // Save JWT token
+    localStorage.setItem("token", data.token);
 
-      setLoading(true);
+    // Save user info
+    localStorage.setItem("user", JSON.stringify(data.user));
 
-      const {data} = await API.post("/auth/login",form);
+    // Save permissions separately for easier access in sidebar
+    localStorage.setItem(
+      "permissions",
+      JSON.stringify(data.user.permissions)
+    );
 
-      localStorage.setItem("token",data.token);
-      localStorage.setItem("user",JSON.stringify(data.user));
-
-      navigate("/home");
-
-    }catch(error){
-
-      alert(
-        error.response?.data?.message ||
-        "Login failed"
-      );
-
-    }finally{
-      setLoading(false);
-    }
-
-  };
+    navigate("/home");
+  } catch (error) {
+    alert(error.response?.data?.message || "Login failed");
+  } finally {
+    setLoading(false);
+  }
+};
 
 return (
   <Box

@@ -1,10 +1,14 @@
 import React from 'react';
 import { BsFillBellFill, BsFillEnvelopeFill, BsPersonCircle, BsJustify } from 'react-icons/bs';
 
-function Header({ OpenSidebar }) {
+function Header({ OpenSidebar, openSidebarToggle })  {
   return (
     <>
-      <header className="header">
+     <header
+  className={`header ${
+    openSidebarToggle ? "header-open" : "header-close"
+  }`}
+>
         <div className="header-left">
           {/* Hamburger button for sidebar toggle */}
           <BsJustify className="menu-toggle" onClick={OpenSidebar} title="Menu" />
@@ -23,22 +27,31 @@ function Header({ OpenSidebar }) {
         /* ==============================
            HEADER STYLING
         ============================== */
-        .header {
-          height: 60px;
-          position: fixed;
-          top: 0;
-          left: 280px; /* matches sidebar width */
-          right: 0;
-          background: #ffffff;
-          border-bottom: 1px solid #e5e7eb;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 20px;
-          z-index: 999;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-          transition: left 0.3s ease;
-        }
+     .header {
+  height: 60px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  z-index: 999;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+/* Sidebar Open */
+.header-open {
+  left: 280px;
+}
+
+/* Sidebar Closed */
+.header-close {
+  left: 0;
+}
 
         .header-left {
           display: flex;

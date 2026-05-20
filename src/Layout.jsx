@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 import { useState } from "react";
 
 export default function Layout() {
-  const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
+  const [openSidebarToggle, setOpenSidebarToggle] = useState(true);
 
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle);
@@ -12,14 +12,21 @@ export default function Layout() {
 
   return (
     <div className="grid-container">
-      <Header OpenSidebar={OpenSidebar} />
+      <Header
+        OpenSidebar={OpenSidebar}
+        openSidebarToggle={openSidebarToggle}
+      />
+
       <Sidebar
         openSidebarToggle={openSidebarToggle}
         OpenSidebar={OpenSidebar}
       />
 
-      {/* ✅ THIS FIXES YOUR ISSUE */}
-      <main className="main-content">
+      <main
+        className={`main-content ${
+          openSidebarToggle ? "sidebar-open" : "sidebar-close"
+        }`}
+      >
         <Outlet />
       </main>
     </div>

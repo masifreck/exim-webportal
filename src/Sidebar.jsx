@@ -23,12 +23,11 @@ import { RiAdminFill, RiFolderFill, RiStarFill } from "react-icons/ri";
 
 import "./Side.css";
 
-function Sidebar() {
+function Sidebar({ openSidebarToggle, OpenSidebar }) {
   const [masterOpen, setMasterOpen] = useState(false);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-
   // 🔑 Read permissions from localStorage
   const permissions = JSON.parse(localStorage.getItem("permissions")) || {};
 
@@ -83,86 +82,97 @@ function Sidebar() {
       .filter(item => item.label.toLowerCase().includes(search.toLowerCase()));
   }, [search, permissions]);
 
-  return (
-    <aside id="sidebar">
-      {/* HEADER */}
-      <div className="sidebar-title">
-        <div className="sidebar-brand">
-          <MdLocalShipping className="icon_header" />
-          EXIM LOGISTICS
+  console.log("sidebar",openSidebarToggle, OpenSidebar)
+return (
+  <>
+    {openSidebarToggle && (
+      <aside id="sidebar">
+        {/* HEADER */}
+        <div className="sidebar-title">
+          <div className="sidebar-brand">
+            <MdLocalShipping className="icon_header" />
+            EXIM LOGISTICS
+          </div>
         </div>
-      </div>
 
-      {/* SEARCH BAR */}
-      <div className="sidebar-search">
-        <MdSearch />
-        <input
-          type="text"
-          placeholder="Search menu..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
+        {/* SEARCH BAR */}
+        <div className="sidebar-search">
+          <MdSearch />
+          <input
+            type="text"
+            placeholder="Search menu..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
 
-      <ul className="sidebar-list">
-        {/* MAIN MENU */}
-        {filteredMenu.map((item, index) => (
-          <li key={index} className="sidebar-list-item">
+        <ul className="sidebar-list">
+          {/* MAIN MENU */}
+          {filteredMenu.map((item, index) => (
+            <li key={index} className="sidebar-list-item">
+              <NavLink
+                to={item.path}
+                className={({ isActive }) =>
+                  isActive ? "active-link" : ""
+                }
+              >
+                <span className="icon">{item.icon}</span>
+                {item.label}
+              </NavLink>
+            </li>
+          ))}
+
+          {/* MASTER MENU */}
+          {filteredMaster.length > 0 && (
+            <li className="sidebar-list-item">
+              <div
+                className="master-toggle"
+                onClick={() => setMasterOpen(!masterOpen)}
+              >
+                <span>
+                  <MdSettingsApplications className="icon" /> Master
+                </span>
+                {masterOpen ? <FaAngleDown /> : <FaAngleRight />}
+              </div>
+
+              <div className={`submenu ${masterOpen ? "open" : ""}`}>
+                {filteredMaster.map((item, index) => (
+                  <NavLink
+                    key={index}
+                    to={item.path}
+                    className={({ isActive }) =>
+                      isActive ? "active-link" : ""
+                    }
+                  >
+                    <span className="icon">{item.icon}</span>
+                    {item.label}
+                  </NavLink>
+                ))}
+              </div>
+            </li>
+          )}
+
+          {/* SETTINGS */}
+          <li className="sidebar-list-item">
             <NavLink
-              to={item.path}
-              className={({ isActive }) => (isActive ? "active-link" : "")}
+              to="/setting"
+              className={({ isActive }) =>
+                isActive ? "active-link" : ""
+              }
             >
-              <span className="icon">{item.icon}</span>
-              {item.label}
+              <MdSettings className="icon" /> Setting
             </NavLink>
           </li>
-        ))}
 
-        {/* MASTER MENU */}
-        {filteredMaster.length > 0 && (
-          <li className="sidebar-list-item">
-            <div
-              className="master-toggle"
-              onClick={() => setMasterOpen(!masterOpen)}
-            >
-              <span>
-                <MdSettingsApplications className="icon" /> Master
-              </span>
-              {masterOpen ? <FaAngleDown /> : <FaAngleRight />}
-            </div>
-
-            <div className={`submenu ${masterOpen ? "open" : ""}`}>
-              {filteredMaster.map((item, index) => (
-                <NavLink
-                  key={index}
-                  to={item.path}
-                  className={({ isActive }) => (isActive ? "active-link" : "")}
-                >
-                  <span className="icon">{item.icon}</span>
-                  {item.label}
-                </NavLink>
-              ))}
-            </div>
+          {/* LOGOUT */}
+          <li className="sidebar-list-item logout" onClick={handleLogout}>
+            <MdLogout className="icon" /> Logout
           </li>
-        )}
-
-        {/* SETTINGS */}
-        <li className="sidebar-list-item">
-          <NavLink
-            to="/setting"
-            className={({ isActive }) => (isActive ? "active-link" : "")}
-          >
-            <MdSettings className="icon" /> Setting
-          </NavLink>
-        </li>
-
-        {/* LOGOUT */}
-        <li className="sidebar-list-item logout" onClick={handleLogout}>
-          <MdLogout className="icon" /> Logout
-        </li>
-      </ul>
-    </aside>
-  );
+        </ul>
+      </aside>
+    )}
+  </>
+);
 }
 
 export default Sidebar;

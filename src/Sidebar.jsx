@@ -17,7 +17,7 @@ import {
   MdOutlineMap
 } from "react-icons/md";
 
-import { FaUsers, FaWalking, FaAngleDown, FaAngleRight, FaUserTie } from "react-icons/fa";
+import { FaUsers, FaWalking, FaAngleDown, FaAngleRight, FaUserTie,FaLightbulb } from "react-icons/fa";
 import { BiGitBranch } from "react-icons/bi";
 import { RiAdminFill, RiFolderFill, RiStarFill } from "react-icons/ri";
 
@@ -53,7 +53,13 @@ function Sidebar({ openSidebarToggle, OpenSidebar }) {
     { label: "User", icon: <FaUsers />, path: "/users", permission: "is_admin" },
     { label: "TBT", icon: <MdAssignment />, path: "/tbt", permission: "is_tbt" },
     { label: "Line Walk", icon: <FaWalking />, path: "/linewalk", permission: "is_linewalk" },
-    { label: "Near Miss", icon: <MdReportProblem />, path: "/nearmiss", permission: "is_nearmiss" }
+    { label: "Near Miss", icon: <MdReportProblem />, path: "/nearmiss", permission: "is_nearmiss" },
+    { 
+  label: "Suggestions", 
+  icon: <FaLightbulb />, 
+  path: "/suggestions", 
+  permission: "is_suggestions" 
+},
   ];
 
   const masterItems = [
